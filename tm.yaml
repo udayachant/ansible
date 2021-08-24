@@ -1,0 +1,31 @@
+- hosts: all
+  remote_user: ec2-user
+  become: yes
+  vars:
+    tomcat_port: 9000
+  tasks:
+     - name: updating pacakages
+       yum:
+          name: "*"
+          state: latest
+     - name: installing java
+       yum:
+          name: java-1.8.0-openjdk
+          state: present
+     - name: installing tomcat
+       get_url:
+          url: https://mirrors.estointernet.in/apache/tomcat/tomcat-9/v9.0.50/bin/apache-tomcat-9.0.50.zip
+          dest: /usr/local
+          mode: '0777'
+     - name: unzip tomcat
+       unarchive:
+          src: /usr/local/apache-tomcat-9.0.50.zip
+          dest: /usr/local
+          remote_src: yes
+          mode: '0777'
+     - name: copying to
+       template:
+          src: ./server.xml.j2
+          dest: /usr/local/apache-tomcat-9.0.50/conf/server.xml
+     - name: starting tomcat
+       shell: nohup /usr/local/apache-tomcat-9.0.50/bin/startup.sh  &

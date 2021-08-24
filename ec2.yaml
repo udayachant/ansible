@@ -1,0 +1,12 @@
+- hosts: localhost
+  remote_user: ec2=user
+  become: yes
+  tasks:
+   - ec2:
+         key_name: tokyo
+         instance_type: t2.micro
+         image: ami-06631ebafb3ae5d34
+         region: ap-northeast-1
+         count: 1
+         vpc_subnet_id: subnet-30883a78
+         assign_public_ip: yes

@@ -1,0 +1,25 @@
+- hosts: all
+  remote_user: ec2-user
+  become: yes
+  tasks:
+     - name: going to update
+       yum:
+          name: "*"
+          state: present
+     - name: going to install tomact
+       get_url:
+          url: https://repo.mysql.com/mysql-community-release-el7-5.noarch.rpm
+          dest: /usr/local  
+          mode: '0777' 
+     - name: Install package
+       yum:
+        name: /usr/local/mysql-community-release-el7-5.noarch.rpm
+        state: present
+     - name: Install MySQL
+       yum: 
+        name: mysql-server 
+        state: present
+     - name: start mysql
+       service:
+           name: mysqld
+           state: started

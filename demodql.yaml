@@ -1,0 +1,25 @@
+- hosts: all
+  remote_user: ec2-user
+  become: yes
+  tasks:
+     - name: install wget
+       yum:
+        name: wget
+        state: present
+     - name: download
+       get_url:
+        url: https://repo.mysql.com/mysql-community-release-el5-5.noarch.rpm
+        dest: /
+        mode: '0777'
+     - name: Install package
+       yum:
+        name: /mysql-community-release-el7-5.noarch.rpm
+        state: present
+     - name: Install MySQL
+       yum: 
+        name: mysql-server 
+        state: present
+     - name: start mysql
+       service:
+           name: mysqld
+           state: started

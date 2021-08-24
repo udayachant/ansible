@@ -1,0 +1,10 @@
+- hosts: all
+  remote_user: ec2-user
+  become: yes
+  tasks:
+       yum: 
+         name: mysql
+         state: present
+       service: 
+           name: mysqld 
+           state: started

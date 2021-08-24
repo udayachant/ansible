@@ -1,0 +1,29 @@
+- hosts: all
+  remote_user: ec2-user
+  become: yes
+  tasks:
+     - name: going to update
+       yum:
+          name: "*"
+          state: present
+     - name: going to install java
+       yum:
+          name: java-1.8.0-openjdk
+          state: present
+     - name: going to install tomact
+       get_url:
+          url: https://mirrors.estointernet.in/apache/tomcat/tomcat-9/v9.0.50/bin/apache-tomcat-9.0.50.zip
+          dest: /usr/local  
+          mode: '0777' 
+     - name: going to unzip tomcat
+       unarchive:
+          src: /usr/local/apache-tomcat-9.0.50.zip
+          dest: /usr/local  
+          remote_src: yes   
+     - name: start tomcat
+       shell: nohup /usr/local/apache-tomcat-9.0.50/bin/startup.sh &
+
+
+#roles main.yml
+       #- include_tasks: second.yaml
+       #- include_tasks: third.yaml
